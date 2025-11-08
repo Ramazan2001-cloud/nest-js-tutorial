@@ -1,14 +1,26 @@
-import { IsArray, IsBoolean, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, IsUUID, Length, Matches, MinLength } from "class-validator";
+import {
+    IsArray,
+    IsBoolean,
+    IsEnum,
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsPositive,
+    IsString,
+    Length,
+} from 'class-validator';
+import { StartWith } from '../decorators/starts-with.decorator';
 
 export enum TaskTag {
     WORK = 'work',
     STUDY = 'study',
-    HOME = 'home'
+    HOME = 'home',
 }
 
 export class CreateTaskDto {
     @IsString({ message: 'Название должно быть строкой' })
     @IsNotEmpty({ message: 'Название задачи не должно быть пустым' })
+    @StartWith('Task:')
     @Length(2, 40, { message: 'Название должно быть от 2 до 10 символов' })
     title: string;
 
@@ -29,19 +41,4 @@ export class CreateTaskDto {
     @IsEnum(TaskTag, { each: true, message: 'Недопустимое значение тега' })
     @IsOptional()
     tags: TaskTag[];
-
-    @IsString({ message: 'Пароль должен быть строкой' })
-    @MinLength(6, { message: 'Пароль должен содержать минимум 6 символов' })
-    @Matches(/^(?=.*[A-Z])(?=.*[0-9]).+$/, {
-        message: 'Пароль должен содержать хотя бы одну заглавную букву и цифру',
-    })
-    @IsOptional()
-    password: string;
-
-    @IsUrl({ protocols: ['https'] }, { message: 'Некорректный формат URL' })
-    @IsOptional()
-    websiteUrl: string;
-
-    @IsUUID('4', { message: 'Некорректный формат UUID'})
-    userId: string;
 }

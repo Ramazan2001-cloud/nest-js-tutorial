@@ -19,7 +19,7 @@ export class TaskService {
             id: 3,
             title: 'Auth API',
             isCompleted: false,
-        }
+        },
     ];
 
     findAll() {
@@ -27,15 +27,15 @@ export class TaskService {
     }
 
     findById(id: number) {
-        const task =this.tasks.find(task => task.id === id);
+        const task = this.tasks.find((task) => task.id === id);
         if (!task) {
-            throw new NotFoundException()
+            throw new NotFoundException();
         }
         return task;
     }
 
     create(dto: CreateTaskDto) {
-        const { title, description, isCompleted, priority, tags, websiteUrl, userId } = dto;
+        const { title, description, isCompleted, priority, tags } = dto;
 
         const newTask = {
             id: this.tasks.length + 1,
@@ -44,9 +44,7 @@ export class TaskService {
             isCompleted,
             priority,
             tags,
-            websiteUrl,
-            userId,
-        }
+        };
         this.tasks.push(newTask);
 
         return this.tasks;
@@ -62,7 +60,7 @@ export class TaskService {
         return this.tasks;
     }
 
-    patcUpdate(id: number, dto: Partial<UpdateTaskDto>) { 
+    patcUpdate(id: number, dto: Partial<UpdateTaskDto>) {
         const task = this.findById(id);
         Object.assign(task, dto);
 
@@ -70,7 +68,7 @@ export class TaskService {
     }
 
     delete(id: number) {
-        this.tasks = this.tasks.filter(task => task.id !== id);
+        this.tasks = this.tasks.filter((task) => task.id !== id);
         return this.tasks;
     }
 }
